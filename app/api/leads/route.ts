@@ -51,6 +51,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // 새로운 필드들 처리
+    let finalTargetSubsidy = body.target_subsidy || null;
+    
+    // "기타 (직접 입력)"인 경우 target_subsidy_other 값을 사용
+    if (body.target_subsidy === '기타 (직접 입력)' && body.target_subsidy_other) {
+      finalTargetSubsidy = body.target_subsidy_other;
+    }
+
+    // referral_source 처리 (폼에서 직접 오거나 from 파라미터로 판단)
+    const referralSource = body.referral_source || 'direct';
+    
+    // from_funnel 처리 (referral_source가 subsidy_match인 경우 true)
+    const fromFunnel = referralSource === 'subsidy_match';
+
     // Supabase에 데이터 삽입
     const insertData: LeadInsert = {
       name: body.name || null,
@@ -66,6 +80,9 @@ export async function POST(request: NextRequest) {
       utm_campaign: body.utm_campaign || null,
       biggest_pain: body.biggest_pain || null,
       biggest_pain_other: body.biggest_pain_other || null,
+      target_subsidy: finalTargetSubsidy,
+      referral_source: referralSource,
+      from_funnel: fromFunnel,
     };
 
     const { data, error } = await supabase

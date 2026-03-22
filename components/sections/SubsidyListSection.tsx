@@ -126,19 +126,35 @@ export default function SubsidyListSection({ subsidies }: SubsidyListSectionProp
                 {getStatusBadge(subsidy.status)}
               </div>
 
-              {/* 보조금명 */}
-              <h3 
-                className="font-semibold text-gray-900 mb-3 leading-tight"
+              {/* 보조금명과 기관 */}
+              <div 
+                className="mb-3"
                 style={{
-                  fontWeight: '600',
-                  color: '#111827',
-                  marginBottom: '0.75rem',
-                  lineHeight: '1.4',
-                  fontSize: '16px'
+                  marginBottom: '0.75rem'
                 }}
               >
-                {subsidy.name}
-              </h3>
+                <h3 
+                  className="font-semibold text-gray-900 leading-tight"
+                  style={{
+                    fontWeight: '600',
+                    color: '#111827',
+                    lineHeight: '1.4',
+                    fontSize: '16px',
+                    marginBottom: '0.25rem'
+                  }}
+                >
+                  {subsidy.name}
+                </h3>
+                <p 
+                  className="text-sm text-gray-500"
+                  style={{
+                    fontSize: '13px',
+                    color: '#6B7280'
+                  }}
+                >
+                  {subsidy.agency}
+                </p>
+              </div>
 
               {/* 지원 금액 */}
               <div 
@@ -198,7 +214,7 @@ export default function SubsidyListSection({ subsidies }: SubsidyListSectionProp
 
               {/* 더 자세히 보기 링크 */}
               <button 
-                className="w-full px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary/5 transition-colors duration-200 text-sm font-medium"
+                className="w-full px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary/5 transition-colors duration-200 text-sm font-medium mb-3"
                 style={{
                   width: '100%',
                   padding: '0.5rem 1rem',
@@ -209,7 +225,8 @@ export default function SubsidyListSection({ subsidies }: SubsidyListSectionProp
                   transition: 'background-color 0.2s ease',
                   fontSize: '14px',
                   fontWeight: '500',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  marginBottom: '0.75rem'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor = 'rgba(45, 80, 22, 0.05)';
@@ -220,6 +237,18 @@ export default function SubsidyListSection({ subsidies }: SubsidyListSectionProp
               >
                 자세히 보기
               </button>
+
+              {/* 안내 문구 */}
+              <p 
+                className="text-xs text-gray-500 text-center"
+                style={{
+                  fontSize: '12px',
+                  color: '#9CA3AF',
+                  textAlign: 'center'
+                }}
+              >
+                상세 조건은 해당 기관에서 확인해주세요
+              </p>
             </div>
           ))}
         </div>

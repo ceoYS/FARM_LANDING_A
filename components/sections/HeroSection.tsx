@@ -108,7 +108,7 @@ export default function HeroSection({ headline, subCopy, ctaText, ctaLink }: Her
             <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-gray-600">
               <div className="flex items-center">
                 <span className="text-primary font-semibold mr-2">✓</span>
-                정부 인증 데이터
+                공공 데이터 활용
               </div>
               <div className="flex items-center">
                 <span className="text-primary font-semibold mr-2">✓</span>

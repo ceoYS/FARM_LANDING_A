@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { CTAFormProps, FARMING_TYPE_OPTIONS, REGION_OPTIONS, FARM_SIZE_OPTIONS, BIGGEST_PAIN_OPTIONS, LeadFormData } from '@/lib/types';
 
 // 글로벌 타입 선언
@@ -15,13 +15,14 @@ declare global {
 export default function CTAForm({ landingSource, additionalFields = [], prefillData }: CTAFormProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   
   const [formData, setFormData] = useState<LeadFormData>({
     region: prefillData?.region || '',
     farming_type: prefillData?.farming_type || '',
     farm_size: '',
     landing_source: landingSource,
-    referral_source: prefillData?.referral_source || '',
+    referral_source: prefillData?.referral_source || (searchParams.get('from') === 'subsidy_match' ? 'subsidy_match' : 'direct'),
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -66,7 +67,7 @@ export default function CTAForm({ landingSource, additionalFields = [], prefillD
       // 제출할 데이터 준비
       const submitData = {
         ...formData,
-        ...additionalData, // 추가 필드 데이터 포함
+        ...additionalData, // 추가 필드 데이터 포함 (target_subsidy, target_subsidy_other 등)
         phone: formData.phone,
       };
 
@@ -92,6 +93,8 @@ export default function CTAForm({ landingSource, additionalFields = [], prefillD
             region: formData.region,
             farm_size: formData.farm_size,
             biggest_pain: formData.biggest_pain,
+            target_subsidy: additionalData.target_subsidy,
+            from_funnel: formData.referral_source === 'subsidy_match'
           });
         }
 
@@ -101,21 +104,29 @@ export default function CTAForm({ landingSource, additionalFields = [], prefillD
             content_name: landingSource,
             content_category: formData.farming_type,
             value: 0,
-            currency: 'KRW'
+            currency: 'KRW',
+            custom_data: {
+              target_subsidy: additionalData.target_subsidy,
+              from_funnel: formData.referral_source === 'subsidy_match'
+            }
           });
         }
       }
 
       // 보조금 매칭 랜딩페이지인 경우 결과 페이지로 리다이렉트
       if (landingSource === 'subsidy_match') {
-        // URL 파라미터 생성
+        // URL 파라미터 생성 (farm_size → area로 변경, pain 추가)
         const params = new URLSearchParams({
           region: formData.region,
           farm_type: formData.farming_type,
         });
         
         if (formData.farm_size) {
-          params.set('farm_size', formData.farm_size);
+          params.set('area', formData.farm_size); // farm_size → area로 변경
+        }
+        
+        if (formData.biggest_pain) {
+          params.set('pain', formData.biggest_pain); // pain 파라미터 추가
         }
         
         // 결과 페이지로 리다이렉트
@@ -134,6 +145,9 @@ export default function CTAForm({ landingSource, additionalFields = [], prefillD
   };
 
   if (isSubmitted) {
+    // 랜딩 B(subsidy_docs)인지 확인
+    const isSubsidyDocs = landingSource === 'subsidy_docs';
+    
     return (
       <section id="cta-form" className="bg-primary/5">
         <div className="section-container section-padding">
@@ -141,13 +155,36 @@ export default function CTAForm({ landingSource, additionalFields = [], prefillD
             <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-100 text-center">
               <div className="text-6xl mb-4">✅</div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                접수 완료
+                {isSubsidyDocs ? '신청서 초안 요청 접수 완료!' : '접수 완료'}
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                입력하신 번호로 매칭 결과를 보내드리겠습니다.
-                <br />
-                (영업일 기준 1일 이내)
+                {isSubsidyDocs ? (
+                  <>
+                    신청서 초안 요청이 접수되었습니다!<br />
+                    입력하신 번호로 결과를 보내드리겠습니다.<br />
+                    (영업일 기준 1~2일 이내)
+                  </>
+                ) : (
+                  <>
+                    입력하신 번호로 매칭 결과를 보내드리겠습니다.<br />
+                    (영업일 기준 1일 이내)
+                  </>
+                )}
               </p>
+              
+              {isSubsidyDocs && (
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <p className="text-sm text-gray-600 mb-3">
+                    아직 보조금 매칭을 안 해보셨나요?
+                  </p>
+                  <a
+                    href="/subsidy-match"
+                    className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-md hover:bg-primary/20 transition-colors duration-200 text-sm font-medium"
+                  >
+                    보조금 매칭도 확인해보세요
+                  </a>
+                </div>
+              )}
               
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <p className="text-sm text-gray-500">
@@ -410,6 +447,25 @@ export default function CTAForm({ landingSource, additionalFields = [], prefillD
                   )}
                 </div>
               ))}
+
+              {/* "기타 (직접 입력)" 선택 시 추가 입력 필드 */}
+              {additionalData.target_subsidy === '기타 (직접 입력)' && (
+                <div>
+                  <label htmlFor="target_subsidy_other" className="block text-sm font-medium text-gray-700 mb-1">
+                    구체적인 보조금명을 입력해주세요 <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="target_subsidy_other"
+                    name="target_subsidy_other"
+                    value={additionalData.target_subsidy_other || ''}
+                    onChange={handleAdditionalChange}
+                    placeholder="예: 농업기계 임대사업"
+                    required
+                    className="w-full px-3 py-3 border border-gray-300 rounded-cta focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  />
+                </div>
+              )}
 
               {/* 에러 메시지 */}
               {error && (

@@ -74,7 +74,7 @@ export default function NavBar() {
         >
           {/* 로고 */}
           <Link 
-            href="/" 
+            href="/subsidy-match" 
             className="flex items-center space-x-2"
             style={{
               display: 'flex',

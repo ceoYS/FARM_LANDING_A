@@ -40,7 +40,7 @@ export default function ProblemSection({ title, items }: ProblemSectionProps) {
               "이런 고민들, 혹시 나만 하는 건 아니겠지...?"
             </p>
             <p className="text-sm text-gray-500 mt-2">
-              전국 농업인 10명 중 8명이 경험한 공통적인 어려움입니다.
+              많은 농업인분들이 겪고 있는 어려움입니다.
             </p>
           </div>
         </div>

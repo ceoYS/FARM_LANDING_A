@@ -12,6 +12,7 @@ import CTAForm from '@/components/forms/CTAForm';
 
 // 랜딩 B 데이터 import
 import { subsidyDocsData } from '@/data/landings/subsidy-docs';
+import { TARGET_SUBSIDY_OPTIONS } from '@/lib/types';
 
 // 메타데이터 생성
 export const metadata: Metadata = {
@@ -33,7 +34,10 @@ export const metadata: Metadata = {
 
 // 랜딩 B 페이지 컴포넌트 (URL 파라미터 처리 포함)
 function SubsidyDocsContent({ searchParams }: { searchParams: { [key: string]: string | undefined } }) {
-  const { region, farm_type, farm_size, from } = searchParams;
+  const { region, farm_type, area, from, farm_size } = searchParams;
+  
+  // 하위 호환성을 위한 area 값 처리 (farm_size가 있으면 우선 사용)
+  const farmArea = farm_size || area;
   
   // URL 파라미터로부터 prefill 데이터 생성
   const prefillData = {
@@ -42,13 +46,14 @@ function SubsidyDocsContent({ searchParams }: { searchParams: { [key: string]: s
     referral_source: from === 'subsidy_match' ? 'subsidy_match' : 'direct'
   };
 
-  // 랜딩 B 전용 추가 필드 (보조금명 필드 추가)
+  // 랜딩 B 전용 추가 필드 (보조금 선택 드롭다운)
   const additionalFields = [
     {
-      name: 'subsidy_name',
-      label: '신청하려는 보조금명',
-      type: 'text' as const,
-      required: false,
+      name: 'target_subsidy',
+      label: '신청하려는 보조금',
+      type: 'select' as const,
+      required: true,
+      options: Array.from(TARGET_SUBSIDY_OPTIONS)
     }
   ];
 

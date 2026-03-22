@@ -88,12 +88,12 @@ export const subsidyMatchData = {
   trust: {
     items: [
       {
-        text: '공공데이터포털(data.go.kr) 공식 데이터 기반',
+        text: '공공데이터포털(data.go.kr) 공개 데이터 활용',
         source: '행정안전부 공공데이터포털'
       },
       {
-        text: '보조금24 연동으로 실시간 정보 업데이트',
-        source: '복권위원회 보조금24'
+        text: '보조금24 공개 정보 참고',
+        source: '기획재정부 보조금24'
       },
       {
         text: '농림축산식품부 2026년 예산 20.1조 원 중 당신 몫을 찾아드립니다',

@@ -1,8 +1,17 @@
+'use client';
+
 import Link from 'next/link';
 import { ResultCTASectionProps } from '@/lib/types';
 
+// 글로벌 타입 선언
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+  }
+}
+
 export default function ResultCTASection({ region, farmingType, farmSize }: ResultCTASectionProps) {
-  // URL 파라미터 생성
+  // URL 파라미터 생성 (area로 변경)
   const createSubsidyDocsUrl = () => {
     const params = new URLSearchParams({
       region,
@@ -11,10 +20,20 @@ export default function ResultCTASection({ region, farmingType, farmSize }: Resu
     });
     
     if (farmSize) {
-      params.set('farm_size', farmSize);
+      params.set('area', farmSize); // farm_size → area로 변경
     }
     
     return `/subsidy-docs?${params.toString()}`;
+  };
+
+  // CTA 클릭 핸들러
+  const handleCTAClick = () => {
+    // GA4 이벤트 전송
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'funnel_b_click', {
+        from_funnel: true
+      });
+    }
   };
 
   return (
@@ -98,6 +117,7 @@ export default function ResultCTASection({ region, farmingType, farmSize }: Resu
             {/* CTA 버튼 */}
             <Link 
               href={createSubsidyDocsUrl()}
+              onClick={handleCTAClick}
               className="cta-button text-lg px-8 py-4 inline-block w-full sm:w-auto max-w-md mx-auto"
               style={{
                 backgroundColor: '#F5A623',

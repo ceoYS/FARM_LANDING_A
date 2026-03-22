@@ -66,33 +66,6 @@ export default function FAQSection({ faqs }: FAQSectionProps) {
             ))}
           </div>
           
-          {/* 추가 문의 안내 */}
-          <div className="mt-12 text-center">
-            <div className="bg-primary/5 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                더 궁금한 점이 있으신가요?
-              </h3>
-              <p className="text-gray-600 mb-4">
-                언제든 편하게 문의해주세요. 친절하게 안내해드리겠습니다.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <a
-                  href="mailto:help@farmhelp.co.kr"
-                  className="inline-flex items-center justify-center px-6 py-3 border border-primary text-primary bg-white rounded-cta hover:bg-primary hover:text-white transition-colors duration-200 font-medium"
-                >
-                  <span>📧</span>
-                  <span className="ml-2">이메일 문의</span>
-                </a>
-                <a
-                  href="tel:1588-1234"
-                  className="inline-flex items-center justify-center px-6 py-3 border border-primary text-primary bg-white rounded-cta hover:bg-primary hover:text-white transition-colors duration-200 font-medium"
-                >
-                  <span>📞</span>
-                  <span className="ml-2">전화 상담</span>
-                </a>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

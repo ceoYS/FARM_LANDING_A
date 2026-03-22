@@ -27,6 +27,9 @@ export interface Database {
           utm_campaign: string | null
           biggest_pain: string | null
           biggest_pain_other: string | null
+          target_subsidy: string | null
+          referral_source: string | null
+          from_funnel: boolean | null
         }
         Insert: {
           id?: string
@@ -44,6 +47,9 @@ export interface Database {
           utm_campaign?: string | null
           biggest_pain?: string | null
           biggest_pain_other?: string | null
+          target_subsidy?: string | null
+          referral_source?: string | null
+          from_funnel?: boolean | null
         }
         Update: {
           id?: string
@@ -61,6 +67,9 @@ export interface Database {
           utm_campaign?: string | null
           biggest_pain?: string | null
           biggest_pain_other?: string | null
+          target_subsidy?: string | null
+          referral_source?: string | null
+          from_funnel?: boolean | null
         }
       }
     }
@@ -93,18 +102,21 @@ export interface LeadFormData {
   farm_size?: string;
   age?: number;
   landing_source: string;
-  referral_source?: string; // 퍼널 추적을 위한 필드 추가
+  referral_source?: string; // 퍼널 추적을 위한 필드
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
   biggest_pain?: string;
   biggest_pain_other?: string;
+  target_subsidy?: string; // 선택한 보조금명
+  from_funnel?: boolean; // 퍼널을 통해 유입된 리드인지 여부
 }
 
 // 보조금 아이템 타입 (결과 페이지용)
 export interface SubsidyItem {
   id: string;
   name: string;
+  agency: string; // 지원기관 추가
   maxAmount: string;
   deadline: string;
   status: 'available' | 'urgent';
@@ -112,7 +124,6 @@ export interface SubsidyItem {
 
 // 랜딩 B 전용 폼 데이터 (추가 필드 포함)
 export interface SubsidyDocsFormData extends Omit<LeadFormData, 'landing_source'> {
-  subsidy_name?: string; // 신청하려는 보조금명
   landing_source: 'subsidy_docs';
 }
 
@@ -175,6 +186,16 @@ export const BIGGEST_PAIN_OPTIONS = [
   "수확철 인력 구하기가 힘듦",
   "농지 시세를 알기 어려움",
   "기타"
+] as const;
+
+// 보조금 선택 옵션 (랜딩 B용)
+export const TARGET_SUBSIDY_OPTIONS = [
+  "2026 스마트농업 시범사업",
+  "친환경농업 직접지불금",
+  "농업에너지 이용효율화 사업",
+  "청년농업인 영농정착 지원",
+  "공익직불금",
+  "기타 (직접 입력)"
 ] as const;
 
 // 공통 컴포넌트 props 타입들

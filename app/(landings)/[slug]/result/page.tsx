@@ -6,6 +6,8 @@ import Footer from '@/components/layout/Footer';
 import ResultHeroSection from '@/components/sections/ResultHeroSection';
 import SubsidyListSection from '@/components/sections/SubsidyListSection';
 import ResultCTASection from '@/components/sections/ResultCTASection';
+import ResultFooterSection from '@/components/sections/ResultFooterSection';
+import ResultTrackingScript from '@/components/tracking/ResultTrackingScript';
 import { SubsidyItem } from '@/lib/types';
 
 interface ResultPageProps {
@@ -15,52 +17,52 @@ interface ResultPageProps {
   searchParams: {
     region?: string;
     farm_type?: string;
+    area?: string; // farm_size → area로 변경
+    pain?: string; // pain 파라미터 추가
+    // 하위 호환성을 위한 fallback
     farm_size?: string;
   };
 }
 
-// 더미 보조금 데이터
+// 보조금 데이터 (요구사항에 맞는 정확한 4개)
 const getDummySubsidies = (region: string, farmType: string): SubsidyItem[] => {
   const subsidies: SubsidyItem[] = [
     {
       id: '1',
       name: '2026 스마트농업 시범사업',
+      agency: '농림축산식품부',
       maxAmount: '최대 3,000만원',
       deadline: '2026년 5월 31일',
       status: 'available'
     },
     {
       id: '2',
-      name: '농업인 경영개선 지원사업',
-      maxAmount: '최대 1,500만원',
-      deadline: '2026년 4월 15일',
-      status: 'urgent'
+      name: '친환경농업 직접지불금',
+      agency: '농림축산식품부',
+      maxAmount: 'ha당 50~100만원',
+      deadline: '2026년 6월 15일',
+      status: 'available'
     },
     {
       id: '3',
-      name: '친환경농업 직불제',
-      maxAmount: '최대 800만원',
-      deadline: '2026년 6월 30일',
-      status: 'available'
+      name: '농업에너지 이용효율화 사업',
+      agency: '농촌진흥청',
+      maxAmount: '최대 1,500만원',
+      deadline: '2026년 4월 30일',
+      status: 'urgent'
     },
     {
       id: '4',
-      name: '농촌융복합산업 활성화 지원',
-      maxAmount: '최대 2,000만원',
-      deadline: '2026년 5월 15일',
-      status: 'available'
-    },
-    {
-      id: '5',
       name: '청년농업인 영농정착 지원',
-      maxAmount: '최대 1,000만원',
-      deadline: '2026년 3월 31일',
-      status: 'urgent'
+      agency: '농림축산식품부',
+      maxAmount: '월 최대 110만원 (3년)',
+      deadline: '2026년 7월 31일',
+      status: 'available'
     }
   ];
 
-  // 지역과 영농형태에 따라 필터링 (실제로는 더 복잡한 로직)
-  return subsidies.slice(0, Math.min(5, Math.max(3, subsidies.length)));
+  // 항상 4개 모두 반환
+  return subsidies;
 };
 
 // 메타데이터 생성
@@ -80,7 +82,10 @@ export async function generateMetadata({ params, searchParams }: ResultPageProps
 // 결과 페이지 컴포넌트
 function ResultPageContent({ params, searchParams }: ResultPageProps) {
   const { slug } = params;
-  const { region, farm_type: farmType, farm_size: farmSize } = searchParams;
+  const { region, farm_type: farmType, area, pain, farm_size: farmSize } = searchParams;
+  
+  // 하위 호환성을 위한 area 값 처리 (farm_size가 있으면 우선 사용)
+  const farmArea = farmSize || area;
 
   // 유효한 랜딩페이지인지 확인 (현재는 subsidy-match만 지원)
   if (slug !== 'subsidy-match') {
@@ -100,6 +105,14 @@ function ResultPageContent({ params, searchParams }: ResultPageProps) {
     <>
       <NavBar />
       <main>
+        {/* GA4 추적 스크립트 */}
+        <ResultTrackingScript 
+          region={region}
+          farmType={farmType}
+          area={farmArea}
+          pain={pain}
+        />
+
         {/* 결과 Hero 섹션 */}
         <ResultHeroSection 
           region={region}
@@ -114,8 +127,11 @@ function ResultPageContent({ params, searchParams }: ResultPageProps) {
         <ResultCTASection 
           region={region}
           farmingType={farmType}
-          farmSize={farmSize}
+          farmSize={farmArea}
         />
+
+        {/* 하단 안내 섹션 */}
+        <ResultFooterSection />
       </main>
       <Footer />
     </>
