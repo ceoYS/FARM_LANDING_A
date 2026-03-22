@@ -1,0 +1,109 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #2D5016;
+  --color-secondary: #F5A623;
+  --color-background: #FAFAF5;
+  --color-foreground: #1F2937;
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: Pretendard, system-ui, sans-serif !important;
+  }
+
+  body {
+    background-color: var(--color-background) !important;
+    color: var(--color-foreground) !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+  }
+
+  h1 {
+    font-size: 32px !important;
+    line-height: 1.2 !important;
+  }
+
+  @media (min-width: 769px) {
+    h1 {
+      font-size: 40px !important;
+      line-height: 1.2 !important;
+    }
+  }
+}
+
+@layer components {
+  .cta-button {
+    background-color: var(--color-secondary) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    padding: 1rem 2rem !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+    height: 56px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: none !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+  }
+
+  .cta-button:hover {
+    background-color: #E0941A !important;
+    transform: scale(0.95) !important;
+  }
+
+  .hero-cta-button:hover {
+    background-color: #E0941A !important;
+  }
+
+  .section-container {
+    max-width: 72rem !important;
+    margin: 0 auto !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  @media (min-width: 640px) {
+    .section-container {
+      padding-left: 1.5rem !important;
+      padding-right: 1.5rem !important;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .section-container {
+      padding-left: 2rem !important;
+      padding-right: 2rem !important;
+    }
+  }
+
+  .section-padding {
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+  }
+
+  @media (min-width: 640px) {
+    .section-padding {
+      padding-top: 5rem !important;
+      padding-bottom: 5rem !important;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .section-padding {
+      padding-top: 6rem !important;
+      padding-bottom: 6rem !important;
+    }
+  }
+}
