@@ -25,6 +25,8 @@ export interface Database {
           utm_source: string | null
           utm_medium: string | null
           utm_campaign: string | null
+          biggest_pain: string | null
+          biggest_pain_other: string | null
         }
         Insert: {
           id?: string
@@ -40,6 +42,8 @@ export interface Database {
           utm_source?: string | null
           utm_medium?: string | null
           utm_campaign?: string | null
+          biggest_pain?: string | null
+          biggest_pain_other?: string | null
         }
         Update: {
           id?: string
@@ -55,6 +59,8 @@ export interface Database {
           utm_source?: string | null
           utm_medium?: string | null
           utm_campaign?: string | null
+          biggest_pain?: string | null
+          biggest_pain_other?: string | null
         }
       }
     }
@@ -91,6 +97,8 @@ export interface LeadFormData {
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
+  biggest_pain?: string;
+  biggest_pain_other?: string;
 }
 
 // 보조금 아이템 타입 (결과 페이지용)
@@ -152,6 +160,21 @@ export const REGION_OPTIONS = [
   '경상북도',
   '경상남도',
   '제주특별자치도',
+] as const;
+
+// 농가 문제점 옵션
+export const BIGGEST_PAIN_OPTIONS = [
+  "받을 수 있는 보조금을 모르겠음",
+  "보조금 서류 작성이 너무 복잡함", 
+  "영농일지 쓰는 게 귀찮음",
+  "농산물 시세를 제때 파악하기 어려움",
+  "농약/비료 사용 기록 관리가 번거로움",
+  "GAP/친환경 인증 준비가 막막함",
+  "세금/부가세 환급을 잘 모르겠음",
+  "농기계 빌리기가 어려움",
+  "수확철 인력 구하기가 힘듦",
+  "농지 시세를 알기 어려움",
+  "기타"
 ] as const;
 
 // 공통 컴포넌트 props 타입들

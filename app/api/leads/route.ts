@@ -35,6 +35,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // biggest_pain 필수 검증
+    if (!body.biggest_pain) {
+      return NextResponse.json(
+        { error: '가장 골치 아픈 문제를 선택해주세요.' },
+        { status: 400 }
+      );
+    }
+
+    // biggest_pain이 "기타"일 때 biggest_pain_other 필수 검증
+    if (body.biggest_pain === '기타' && !body.biggest_pain_other?.trim()) {
+      return NextResponse.json(
+        { error: '구체적인 문제 내용을 입력해주세요.' },
+        { status: 400 }
+      );
+    }
+
     // Supabase에 데이터 삽입
     const insertData: LeadInsert = {
       name: body.name || null,
@@ -48,6 +64,8 @@ export async function POST(request: NextRequest) {
       utm_source: body.utm_source || null,
       utm_medium: body.utm_medium || null,
       utm_campaign: body.utm_campaign || null,
+      biggest_pain: body.biggest_pain || null,
+      biggest_pain_other: body.biggest_pain_other || null,
     };
 
     const { data, error } = await supabase

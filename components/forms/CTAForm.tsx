@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { CTAFormProps, FARMING_TYPE_OPTIONS, REGION_OPTIONS, FARM_SIZE_OPTIONS, LeadFormData } from '@/lib/types';
+import { CTAFormProps, FARMING_TYPE_OPTIONS, REGION_OPTIONS, FARM_SIZE_OPTIONS, BIGGEST_PAIN_OPTIONS, LeadFormData } from '@/lib/types';
 
 // 글로벌 타입 선언
 declare global {
@@ -91,6 +91,7 @@ export default function CTAForm({ landingSource, additionalFields = [], prefillD
             farming_type: formData.farming_type,
             region: formData.region,
             farm_size: formData.farm_size,
+            biggest_pain: formData.biggest_pain,
           });
         }
 
@@ -225,7 +226,7 @@ export default function CTAForm({ landingSource, additionalFields = [], prefillD
                   marginBottom: '0.5rem'
                 }}
               >
-                무료로 시작하기
+                우리 농가에 맞는 보조금, 무료로 찾아드립니다
               </h3>
               <p 
                 className="text-gray-600"
@@ -234,7 +235,7 @@ export default function CTAForm({ landingSource, additionalFields = [], prefillD
                   fontSize: '16px'
                 }}
               >
-                간단한 정보만 입력하면 맞춤 서비스를 받을 수 있어요
+                아래 정보를 입력하시면, 받을 수 있는 보조금 목록을 정리해서 보내드립니다
               </p>
             </div>
 
@@ -304,6 +305,47 @@ export default function CTAForm({ landingSource, additionalFields = [], prefillD
                   ))}
                 </select>
               </div>
+
+              {/* 농가 문제점 */}
+              <div>
+                <label htmlFor="biggest_pain" className="block text-sm font-medium text-gray-700 mb-1">
+                  지금 가장 골치 아픈 문제가 뭔가요? <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="biggest_pain"
+                  name="biggest_pain"
+                  value={formData.biggest_pain || ''}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-3 border border-gray-300 rounded-cta focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
+                >
+                  <option value="">선택해주세요</option>
+                  {BIGGEST_PAIN_OPTIONS.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* 기타 상세 입력 - biggest_pain이 '기타'일 때만 표시 */}
+              {formData.biggest_pain === '기타' && (
+                <div>
+                  <label htmlFor="biggest_pain_other" className="block text-sm font-medium text-gray-700 mb-1">
+                    구체적으로 어떤 문제인지 알려주세요 <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="biggest_pain_other"
+                    name="biggest_pain_other"
+                    value={formData.biggest_pain_other || ''}
+                    onChange={handleInputChange}
+                    placeholder="예: 유기농 인증 받는 방법을 모르겠어요"
+                    required
+                    className="w-full px-3 py-3 border border-gray-300 rounded-cta focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  />
+                </div>
+              )}
 
               {/* 전화번호 */}
               <div>
