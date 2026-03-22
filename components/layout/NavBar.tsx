@@ -10,8 +10,6 @@ export default function NavBar() {
   const getCtaText = () => {
     if (pathname.includes('/result')) {
       return '신청서 초안 받기';
-    } else if (pathname === '/subsidy-docs') {
-      return '무료 체험하기';
     } else {
       return '무료로 매칭 결과 받기';
     }
