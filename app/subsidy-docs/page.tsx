@@ -53,7 +53,14 @@ function SubsidyDocsContent({ searchParams }: { searchParams: { [key: string]: s
       label: '신청하려는 보조금',
       type: 'select' as const,
       required: true,
-      options: Array.from(TARGET_SUBSIDY_OPTIONS)
+      options: [
+        '스마트팜 구축 지원',
+        '청년농업인 영농정착 지원',
+        '농업용 시설 현대화',
+        '친환경농업 직접지불금',
+        '농촌 태양광 발전사업',
+        '기타'
+      ]
     }
   ];
 

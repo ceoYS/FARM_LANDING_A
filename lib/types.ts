@@ -221,10 +221,17 @@ export interface StatProps {
   label: string;
 }
 
+export interface FeatureCardProps {
+  icon: string;
+  title: string;
+  description: string;
+}
+
 export interface SolutionSectionProps {
   title: string;
   description: string;
   stats: StatProps[];
+  features?: FeatureCardProps[]; // 선택적 특징 카드들
 }
 
 export interface StepProps {

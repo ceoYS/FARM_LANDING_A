@@ -59,6 +59,23 @@ export const subsidyDocsData = {
         number: 'HWP/PDF',
         label: '다운로드 형식'
       }
+    ],
+    features: [
+      {
+        icon: '📄',
+        title: '양식 자동 적용',
+        description: '농식품부 표준 HWP 양식에 맞춰 자동 작성'
+      },
+      {
+        icon: '⚡',
+        title: '10분 완성',
+        description: '사업계획서·예산서·영농현황 한 번에'
+      },
+      {
+        icon: '💰',
+        title: '비용 절감',
+        description: '대행 50~100만원 → 무료 베타'
+      }
     ]
   } as SolutionSectionProps,
 
@@ -88,16 +105,16 @@ export const subsidyDocsData = {
   trust: {
     items: [
       {
-        text: '실제 승인된 신청서 패턴을 학습한 AI',
-        source: '농업기술실용화재단 승인 사례 3,000건+ 학습'
+        text: '공개된 보조금 신청서 양식과 가이드라인 기반',
+        source: '농림축산식품부 공개 자료 활용'
       },
       {
         text: '농림축산식품부 표준 양식 기반',
-        source: '농식품부 공식 양식 100% 반영'
+        source: '농식품부 공개 양식 참고'
       },
       {
-        text: '작성 후 전문가 검토 옵션 제공 예정',
-        source: '농업경영컨설턴트 협력 예정'
+        text: '추후 전문가 검토 옵션 추가 예정 (미확정)',
+        source: '서비스 개선 계획'
       }
     ]
   } as TrustSectionProps,

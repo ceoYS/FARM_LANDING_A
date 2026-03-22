@@ -263,7 +263,9 @@ export default function CTAForm({ landingSource, additionalFields = [], prefillD
                   marginBottom: '0.5rem'
                 }}
               >
-                우리 농가에 맞는 보조금, 무료로 찾아드립니다
+                {landingSource === 'subsidy_docs' 
+                  ? '보조금 신청서 초안, 무료로 받아보세요' 
+                  : '우리 농가에 맞는 보조금, 무료로 찾아드립니다'}
               </h3>
               <p 
                 className="text-gray-600"
@@ -272,136 +274,14 @@ export default function CTAForm({ landingSource, additionalFields = [], prefillD
                   fontSize: '16px'
                 }}
               >
-                아래 정보를 입력하시면, 받을 수 있는 보조금 목록을 정리해서 보내드립니다
+                {landingSource === 'subsidy_docs'
+                  ? '아래 정보를 입력하시면, AI가 작성한 신청서 초안을 보내드립니다'
+                  : '아래 정보를 입력하시면, 받을 수 있는 보조금 목록을 정리해서 보내드립니다'}
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* 지역 */}
-              <div>
-                <label htmlFor="region" className="block text-sm font-medium text-gray-700 mb-1">
-                  지역 <span className="text-red-500">*</span>
-                </label>
-                <select
-                  id="region"
-                  name="region"
-                  value={formData.region}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-3 border border-gray-300 rounded-cta focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
-                >
-                  <option value="">시·도를 선택해주세요</option>
-                  {REGION_OPTIONS.map((region) => (
-                    <option key={region} value={region}>
-                      {region}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* 영농형태 */}
-              <div>
-                <label htmlFor="farming_type" className="block text-sm font-medium text-gray-700 mb-1">
-                  영농형태 <span className="text-red-500">*</span>
-                </label>
-                <select
-                  id="farming_type"
-                  name="farming_type"
-                  value={formData.farming_type}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-3 border border-gray-300 rounded-cta focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
-                >
-                  <option value="">영농형태를 선택해주세요</option>
-                  {FARMING_TYPE_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* 경지면적 */}
-              <div>
-                <label htmlFor="farm_size" className="block text-sm font-medium text-gray-700 mb-1">
-                  경지면적 <span className="text-red-500">*</span>
-                </label>
-                <select
-                  id="farm_size"
-                  name="farm_size"
-                  value={formData.farm_size || ''}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-3 border border-gray-300 rounded-cta focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
-                >
-                  <option value="">경지면적을 선택해주세요</option>
-                  {FARM_SIZE_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* 농가 문제점 */}
-              <div>
-                <label htmlFor="biggest_pain" className="block text-sm font-medium text-gray-700 mb-1">
-                  지금 가장 골치 아픈 문제가 뭔가요? <span className="text-red-500">*</span>
-                </label>
-                <select
-                  id="biggest_pain"
-                  name="biggest_pain"
-                  value={formData.biggest_pain || ''}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-3 border border-gray-300 rounded-cta focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
-                >
-                  <option value="">선택해주세요</option>
-                  {BIGGEST_PAIN_OPTIONS.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* 기타 상세 입력 - biggest_pain이 '기타'일 때만 표시 */}
-              {formData.biggest_pain === '기타' && (
-                <div>
-                  <label htmlFor="biggest_pain_other" className="block text-sm font-medium text-gray-700 mb-1">
-                    구체적으로 어떤 문제인지 알려주세요 <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="biggest_pain_other"
-                    name="biggest_pain_other"
-                    value={formData.biggest_pain_other || ''}
-                    onChange={handleInputChange}
-                    placeholder="예: 유기농 인증 받는 방법을 모르겠어요"
-                    required
-                    className="w-full px-3 py-3 border border-gray-300 rounded-cta focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                  />
-                </div>
-              )}
-
-              {/* 전화번호 */}
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                  전화번호 <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone || ''}
-                  onChange={handleInputChange}
-                  placeholder="매칭 결과를 문자로 보내드립니다"
-                  required
-                  className="w-full px-3 py-3 border border-gray-300 rounded-cta focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                />
-              </div>
-
-              {/* 추가 필드들 */}
+              {/* 추가 필드들 (랜딩 B의 경우 target_subsidy가 먼저 나옴) */}
               {additionalFields.map((field, index) => (
                 <div key={index}>
                   <label htmlFor={field.name} className="block text-sm font-medium text-gray-700 mb-1">
@@ -467,6 +347,156 @@ export default function CTAForm({ landingSource, additionalFields = [], prefillD
                 </div>
               )}
 
+              {/* 지역 */}
+              <div>
+                <label htmlFor="region" className="block text-sm font-medium text-gray-700 mb-1">
+                  지역 <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="region"
+                  name="region"
+                  value={formData.region}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-3 border border-gray-300 rounded-cta focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
+                >
+                  <option value="">시·도를 선택해주세요</option>
+                  {REGION_OPTIONS.map((region) => (
+                    <option key={region} value={region}>
+                      {region}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* 영농형태 */}
+              <div>
+                <label htmlFor="farming_type" className="block text-sm font-medium text-gray-700 mb-1">
+                  영농형태 <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="farming_type"
+                  name="farming_type"
+                  value={formData.farming_type}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-3 border border-gray-300 rounded-cta focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
+                >
+                  <option value="">영농형태를 선택해주세요</option>
+                  {FARMING_TYPE_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* 경지면적 - 랜딩 B에서는 제외 */}
+              {landingSource !== 'subsidy_docs' && (
+                <div>
+                  <label htmlFor="farm_size" className="block text-sm font-medium text-gray-700 mb-1">
+                    경지면적 <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    id="farm_size"
+                    name="farm_size"
+                    value={formData.farm_size || ''}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-3 py-3 border border-gray-300 rounded-cta focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
+                  >
+                    <option value="">경지면적을 선택해주세요</option>
+                    {FARM_SIZE_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              {/* 농가 문제점 - 랜딩 B에서는 제외 */}
+              {landingSource !== 'subsidy_docs' && (
+                <>
+                  <div>
+                    <label htmlFor="biggest_pain" className="block text-sm font-medium text-gray-700 mb-1">
+                      지금 가장 골치 아픈 문제가 뭔가요? <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      id="biggest_pain"
+                      name="biggest_pain"
+                      value={formData.biggest_pain || ''}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-3 py-3 border border-gray-300 rounded-cta focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
+                    >
+                      <option value="">선택해주세요</option>
+                      {BIGGEST_PAIN_OPTIONS.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* 기타 상세 입력 - biggest_pain이 '기타'일 때만 표시 */}
+                  {formData.biggest_pain === '기타' && (
+                    <div>
+                      <label htmlFor="biggest_pain_other" className="block text-sm font-medium text-gray-700 mb-1">
+                        구체적으로 어떤 문제인지 알려주세요 <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="biggest_pain_other"
+                        name="biggest_pain_other"
+                        value={formData.biggest_pain_other || ''}
+                        onChange={handleInputChange}
+                        placeholder="예: 유기농 인증 받는 방법을 모르겠어요"
+                        required
+                        className="w-full px-3 py-3 border border-gray-300 rounded-cta focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      />
+                    </div>
+                  )}
+                </>
+              )}
+
+              {/* 전화번호 */}
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                  전화번호 <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone || ''}
+                  onChange={handleInputChange}
+                  placeholder={landingSource === 'subsidy_docs' ? '초안 완성 시 문자로 알려드립니다' : '매칭 결과를 문자로 보내드립니다'}
+                  required
+                  className="w-full px-3 py-3 border border-gray-300 rounded-cta focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                />
+              </div>
+
+
+              {/* "기타 (직접 입력)" 선택 시 추가 입력 필드 */}
+              {additionalData.target_subsidy === '기타 (직접 입력)' && (
+                <div>
+                  <label htmlFor="target_subsidy_other" className="block text-sm font-medium text-gray-700 mb-1">
+                    구체적인 보조금명을 입력해주세요 <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="target_subsidy_other"
+                    name="target_subsidy_other"
+                    value={additionalData.target_subsidy_other || ''}
+                    onChange={handleAdditionalChange}
+                    placeholder="예: 농업기계 임대사업"
+                    required
+                    className="w-full px-3 py-3 border border-gray-300 rounded-cta focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  />
+                </div>
+              )}
+
               {/* 에러 메시지 */}
               {error && (
                 <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-cta">
@@ -480,7 +510,8 @@ export default function CTAForm({ landingSource, additionalFields = [], prefillD
                 disabled={isSubmitting}
                 className="w-full cta-button text-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? '제출 중...' : '무료로 매칭 결과 받기'}
+                {isSubmitting ? '제출 중...' : 
+                 (landingSource === 'subsidy_docs' ? '무료로 신청서 초안 받기' : '무료로 매칭 결과 받기')}
               </button>
 
               {/* 개인정보 동의 */}
